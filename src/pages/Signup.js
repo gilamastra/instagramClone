@@ -3,33 +3,30 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import FirebaseContext from "../context/firebase";
 import * as ROUTES from "../constants/routes";
-const Login = () => {
+import { doesUsernameExists } from "../services/firebase";
+const Signup = () => {
   const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
 
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
   const isInvalid = password === "" || emailAddress === "";
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+    const usernameExists = await doesUsernameExists(username);
 
     try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(emailAddress, password);
-      history.push(ROUTES.DASHBOARD);
-    } catch (error) {
-      setEmailAddress("");
-      setPassword("");
-      setError(error.message);
-    }
+      await firebase;
+    } catch (error) {}
   };
 
   useEffect(() => {
-    document.title = "Login - Instagram";
+    document.title = "Sign up - Instagram";
   }, []);
   return (
     <div className="container flex mx-auto max-w-screen-md items-center h-screen">
@@ -42,14 +39,34 @@ const Login = () => {
             <img
               src="/images/logo.png"
               alt="Instagram"
-              className="mt-6 mb-8 w6/12 "
+              className="mt-2 w6/12 mb-4"
             />
           </h1>
           {error && (
             <p className="mb-4 text-xs text-red-primary ">{error}</p>
           )}
 
-          <form onSubmit={handleLogin} method="POST">
+          <form onSubmit={handleSignup} method="POST">
+            <input
+              aria-label="Enter your username"
+              placeholder="Username"
+              type="text"
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              value={username}
+              className="rounded mb-2 text-sm text-gray-base w-full  mr-3 py-5 px-4 h-2 border border-gray-primary"
+            />
+            <input
+              aria-label="Enter your full name"
+              placeholder="Full name"
+              type="text"
+              onChange={(e) => {
+                setFullName(e.target.value);
+              }}
+              value={fullName}
+              className="rounded mb-2 text-sm text-gray-base w-full  mr-3 py-5 px-4 h-2 border border-gray-primary"
+            />
             <input
               aria-label="Enter your email address"
               placeholder="Email address"
@@ -76,7 +93,7 @@ const Login = () => {
               className={`bg-blue-medium w-full rounded h-8 font-bold  text-white
             ${isInvalid && "opacity-50"}`}
             >
-              Login
+              Sign Up
             </button>
           </form>
         </div>
@@ -85,12 +102,12 @@ const Login = () => {
         border-gray-primary rounded"
         >
           <p className="text-sm">
-            Don't have an account?{` `}
+            Have an account?{` `}
             <Link
-              to={ROUTES.SIGN_UP}
+              to={ROUTES.LOGIN}
               className="font-bold text-blue-medium"
             >
-              Sign up
+              Login
             </Link>
           </p>
         </div>
@@ -99,4 +116,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
