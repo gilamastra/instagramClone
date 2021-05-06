@@ -4,6 +4,7 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "dependencies": {
+    "@welldone-software/why-did-you-render": "^6.1.1",
     "date-fns": "^2.21.1",
     "firebase": "^8.4.2",
     "react": "^17.0.2",
@@ -22,7 +23,7 @@
     "prop-types": "^15.7.2",
     "tailwindcss": "^2.1.2"
   },
- "scripts": {
+  "scripts": {
     "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
     "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css --watch",
     "react-scripts:start": "react-scripts start",
